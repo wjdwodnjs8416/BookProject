@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class BookInfo {
 	String title; // 도서 제목
@@ -94,5 +96,45 @@ public class BookInfo {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+	}
+	
+	public static BookInfo parse(JSONObject input) {
+		BookInfo info = new BookInfo();
+		JSONArray authorsArr = input.getJSONArray("authors");
+		if(input.has("authors")) {
+			String []authors = new String[authorsArr.length()];
+			for(int i=0; i<authorsArr.length(); i++) {
+				authors[i] = authorsArr.getString(i);
+			}
+			info.setAuthors(authors);
+		}
+		if(input.has("contents")) {
+			info.setContents(input.getString("contents"));
+		}
+		if(input.has("isbn")) {
+			info.setIsbn(input.getString("isbn"));
+		}
+		if(input.has("price")){
+			info.setPrice(input.getInt("price"));
+		}
+		if(input.has("publisher")) {
+			info.setPublisher(input.getString("publisher"));
+		}
+		if(input.has("sale_price")) {
+			info.setSale_price(input.getInt("sale_price"));
+		}
+		if(input.has("status")) {
+			info.setStatus(input.getString("status"));
+		}
+		if(input.has("thumbnail")) {
+			info.setThumbnail(input.getString("thumbnail"));
+		}
+		if(input.has("title")) {
+			info.setTitle(input.getString("title"));
+		}
+		if(input.has("url")) {
+			info.setUrl(input.getString("url"));
+		}
+		return info;
 	}
 }
